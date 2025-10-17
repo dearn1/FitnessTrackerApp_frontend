@@ -8,10 +8,12 @@ jobs:
       - checkout  
       - run:
           name: Install dependencies
+          working-directory: ./fitness-tracker-app
           command: |
             npm install
       - run:
           name: Run tests
+          working-directory: ./fitness-tracker-app
           command: |
             npm test -- --watchAll=false --coverage
 
