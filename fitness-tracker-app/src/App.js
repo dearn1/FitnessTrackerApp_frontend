@@ -8,6 +8,10 @@ import WorkoutList from './components/workouts/WorkoutList';
 import WorkoutForm from './components/workouts/WorkoutForm';
 import WorkoutDetail from './components/workouts/WorkoutDetail';
 import PrivateRoute from './components/auth/PrivateRoute';
+import MealList from './components/meals/MealList';
+import MealForm from './components/meals/MealForm';
+import MealDetail from './components/meals/MealDetail';
+import FoodItemBrowser from './components/meals/FoodItemBrowser';
 import './App.css';
 
 function App() {
@@ -59,6 +63,31 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="/meals" element={
+              <PrivateRoute>
+                <MealList />
+              </PrivateRoute>
+            } />
+            <Route path="/meals/new" element={
+              <PrivateRoute>
+                <MealForm />
+              </PrivateRoute>
+            } />
+            <Route path="/meals/food-items" element={
+              <PrivateRoute>
+                <FoodItemBrowser />
+              </PrivateRoute>
+            } />
+            <Route path="/meals/:id" element={
+              <PrivateRoute>
+                <MealDetail />
+              </PrivateRoute>
+            } />
+            <Route path="/meals/:id/edit" element={
+              <PrivateRoute>
+                <MealForm />
+              </PrivateRoute>
+            } />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </div>
