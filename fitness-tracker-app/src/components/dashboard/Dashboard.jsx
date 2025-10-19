@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import authService from '../../services/authService';
+import ApiConnectionTest from '../debug/ApiConnectionTest';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -53,6 +54,8 @@ const Dashboard = () => {
           <p>Ready to track your fitness journey today?</p>
         </div>
 
+        <ApiConnectionTest />
+
         <div className="quick-actions">
   <h3>Quick Actions</h3>
   <div className="actions-grid">
@@ -75,6 +78,16 @@ const Dashboard = () => {
       <div className="action-icon">➕</div>
       <h4>Log Meal</h4>
       <p>Add a new meal entry</p>
+    </Link>
+    <Link to="/steps" className="action-card">
+      <div className="action-icon">👣</div>
+      <h4>View Steps</h4>
+      <p>See all your step logs</p>
+    </Link>
+    <Link to="/steps/new" className="action-card">
+      <div className="action-icon">➕</div>
+      <h4>Log Steps</h4>
+      <p>Add a new step entry</p>
     </Link>
     <div className="action-card coming-soon-card">
       <div className="action-icon">📊</div>
