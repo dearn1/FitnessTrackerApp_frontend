@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, Legend, ResponsiveContainer, ReferenceLine
@@ -11,11 +11,7 @@ const StepChart = ({ period = 7, onPeriodChange }) => {
   const [loading, setLoading] = useState(true);
   const [chartType, setChartType] = useState('bar');
 
-  useEffect(() => {
-    fetchChartData();
-  }, [period]);
-
-  const fetchChartData = async () => {
+  const fetchChartData = useCallback(async () => {
     try {
       setLoading(true);
       const data = await stepService.getChartData(period);
@@ -25,7 +21,11 @@ const StepChart = ({ period = 7, onPeriodChange }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [period]);
+
+  useEffect(() => {
+    fetchChartData();
+  }, [fetchChartData]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

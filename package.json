@@ -6,5 +6,8 @@
     "build": "npm --prefix fitness-tracker-app run build",
     "test": "npm --prefix fitness-tracker-app test",
     "install": "npm --prefix fitness-tracker-app install"
+  },
+  "dependencies": {
+    "recharts": "^3.3.0"
   }
 }

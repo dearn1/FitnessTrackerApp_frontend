@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import stepService from '../../services/stepService';
 import './Steps.css';
@@ -22,13 +22,7 @@ const StepForm = () => {
   const [error, setError] = useState('');
   const [fetchingData, setFetchingData] = useState(false);
 
-  useEffect(() => {
-    if (isEditMode) {
-      fetchStepRecord();
-    }
-  }, [id]);
-
-  const fetchStepRecord = async () => {
+  const fetchStepRecord = useCallback(async () => {
     try {
       setFetchingData(true);
       const data = await stepService.getStepRecord(id);
@@ -47,7 +41,13 @@ const StepForm = () => {
     } finally {
       setFetchingData(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (isEditMode) {
+      fetchStepRecord();
+    }
+  }, [isEditMode, fetchStepRecord]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

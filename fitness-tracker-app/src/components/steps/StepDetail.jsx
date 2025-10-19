@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import stepService from '../../services/stepService';
 import './Steps.css';
@@ -10,11 +10,7 @@ const StepDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    fetchStepDetail();
-  }, [id]);
-
-  const fetchStepDetail = async () => {
+  const fetchStepDetail = useCallback(async () => {
     try {
       setLoading(true);
       const data = await stepService.getStepRecord(id);
@@ -25,7 +21,11 @@ const StepDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchStepDetail();
+  }, [fetchStepDetail]);
 
   const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete this step record?')) {

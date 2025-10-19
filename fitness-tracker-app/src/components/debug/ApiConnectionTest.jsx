@@ -17,7 +17,7 @@ const ApiConnectionTest = () => {
       setError('');
       
       // Try to make a simple request to test connection
-      const response = await api.get('/steps/daily/'); // Test with steps endpoint
+      await api.get('/steps/daily/'); // Test with steps endpoint
       setStatus('connected');
     } catch (err) {
       setStatus('failed');
