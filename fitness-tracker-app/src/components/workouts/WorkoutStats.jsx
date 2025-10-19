@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import workoutService from '../../services/workoutService';
 import './Workouts.css';
 
@@ -7,11 +7,7 @@ const WorkoutStats = () => {
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState('week');
 
-  useEffect(() => {
-    fetchStats();
-  }, [period]);
-
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       setLoading(true);
       const today = new Date();
@@ -38,7 +34,11 @@ const WorkoutStats = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [period]);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
 
   if (loading) {
     return (

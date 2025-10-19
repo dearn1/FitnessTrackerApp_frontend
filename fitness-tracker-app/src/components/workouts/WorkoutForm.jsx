@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import workoutService from '../../services/workoutService';
 import './Workouts.css';
@@ -40,13 +40,7 @@ const WorkoutForm = () => {
     { value: 'other', label: 'Other 🎯' },
   ];
 
-  useEffect(() => {
-    if (isEditMode) {
-      fetchWorkout();
-    }
-  }, [id]);
-
-  const fetchWorkout = async () => {
+  const fetchWorkout = useCallback(async () => {
     try {
       setFetchingWorkout(true);
       const data = await workoutService.getWorkout(id);
@@ -68,7 +62,13 @@ const WorkoutForm = () => {
     } finally {
       setFetchingWorkout(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (isEditMode) {
+      fetchWorkout();
+    }
+  }, [isEditMode, fetchWorkout]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

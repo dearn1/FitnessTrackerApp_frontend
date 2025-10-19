@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import workoutService from '../../services/workoutService';
 import './Workouts.css';
@@ -10,11 +10,7 @@ const WorkoutDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    fetchWorkout();
-  }, [id]);
-
-  const fetchWorkout = async () => {
+  const fetchWorkout = useCallback(async () => {
     try {
       setLoading(true);
       const data = await workoutService.getWorkout(id);
@@ -25,7 +21,11 @@ const WorkoutDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchWorkout();
+  }, [fetchWorkout]);
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this workout?')) {
