@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import authService from '../../services/authService';
@@ -51,6 +52,32 @@ const Dashboard = () => {
           <h2>Welcome back, {profile?.first_name}! 👋</h2>
           <p>Ready to track your fitness journey today?</p>
         </div>
+
+        <div className="quick-actions">
+  <h3>Quick Actions</h3>
+  <div className="actions-grid">
+    <Link to="/workouts" className="action-card">
+      <div className="action-icon">🏃</div>
+      <h4>View Workouts</h4>
+      <p>See all your workout logs</p>
+    </Link>
+    <Link to="/workouts/new" className="action-card">
+      <div className="action-icon">➕</div>
+      <h4>Log Workout</h4>
+      <p>Add a new workout entry</p>
+    </Link>
+    <div className="action-card coming-soon-card">
+      <div className="action-icon">📊</div>
+      <h4>View Analytics</h4>
+      <p>Coming soon</p>
+    </div>
+    <div className="action-card coming-soon-card">
+      <div className="action-icon">🎯</div>
+      <h4>Set Goals</h4>
+      <p>Coming soon</p>
+    </div>
+  </div>
+</div>
 
         <div className="profile-section">
           <h3>Your Profile</h3>
