@@ -66,6 +66,16 @@ const Dashboard = () => {
       <h4>Log Workout</h4>
       <p>Add a new workout entry</p>
     </Link>
+    <Link to="/meals" className="action-card">
+      <div className="action-icon">🍴</div>
+      <h4>View Meals</h4>
+      <p>See all your meal logs</p>
+    </Link>
+    <Link to="/meals/new" className="action-card">
+      <div className="action-icon">➕</div>
+      <h4>Log Meal</h4>
+      <p>Add a new meal entry</p>
+    </Link>
     <div className="action-card coming-soon-card">
       <div className="action-icon">📊</div>
       <h4>View Analytics</h4>
