@@ -12,6 +12,10 @@ import MealList from './components/meals/MealList';
 import MealForm from './components/meals/MealForm';
 import MealDetail from './components/meals/MealDetail';
 import FoodItemBrowser from './components/meals/FoodItemBrowser';
+import StepsDashboard from './components/steps/StepsDashboard';
+import StepsHistory from './components/steps/StepsHistory';
+import StepForm from './components/steps/StepForm';
+import StepDetail from './components/steps/StepDetail';
 import './App.css';
 
 function App() {
@@ -88,6 +92,11 @@ function App() {
                 <MealForm />
               </PrivateRoute>
             } />
+            <Route path="/steps" element={<PrivateRoute><StepsDashboard /></PrivateRoute>} />
+            <Route path="/steps/history" element={<PrivateRoute><StepsHistory /></PrivateRoute>} />
+            <Route path="/steps/new" element={<PrivateRoute><StepForm /></PrivateRoute>} />
+            <Route path="/steps/:id" element={<PrivateRoute><StepDetail /></PrivateRoute>} />
+            <Route path="/steps/:id/edit" element={<PrivateRoute><StepForm /></PrivateRoute>} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </div>

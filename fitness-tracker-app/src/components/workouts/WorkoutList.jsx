@@ -36,6 +36,7 @@ const WorkoutList = () => {
     } catch (err) {
       setError('Failed to load workouts. Please try again.');
       console.error('Error fetching workouts:', err);
+      setWorkouts([]); // Ensure workouts is always an array
     } finally {
       setLoading(false);
     }
@@ -49,7 +50,7 @@ const WorkoutList = () => {
     if (window.confirm('Are you sure you want to delete this workout?')) {
       try {
         await workoutService.deleteWorkout(id);
-        setWorkouts(workouts.filter(workout => workout.id !== id));
+        setWorkouts((workouts || []).filter(workout => workout.id !== id));
       } catch (err) {
         setError('Failed to delete workout.');
         console.error('Error deleting workout:', err);
@@ -76,15 +77,15 @@ const WorkoutList = () => {
       }
       
       // Update the workout in the list
-      setWorkouts(workouts.map(w => w.id === id ? updatedWorkout : w));
+      setWorkouts((workouts || []).map(w => w.id === id ? updatedWorkout : w));
     } catch (err) {
       setError(`Failed to ${action} workout.`);
       console.error(`Error ${action} workout:`, err);
     }
   };
 
-  const filteredWorkouts = workouts.filter(workout =>
-    workout.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  const filteredWorkouts = (workouts || []).filter(workout =>
+    workout.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     workout.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
