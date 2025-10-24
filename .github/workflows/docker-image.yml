@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: React App Deployment
 
 on:
   push:
@@ -7,45 +7,42 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test:
-    docker:
-      - image: cimg/node:18.17
-    steps:
-      - checkout  
-      - run:
-          name: Install dependencies
-          working-directory: ./fitness-tracker-app
-          command: |
-            npm install
-      - run:
-          name: Run tests
-          env:
-            REACT_APP_API_BASE_URL: 'https://fitness-tracker-app-backend.vercel.app/api'
-          working-directory: ./fitness-tracker-app
-          command: |
-            npm test -- --watchAll=false --coverage
+  deploy-react-to-gh-pages:
+    runs-on: ubuntu-latest
+    env:
+      REACT_APP_API_BASE_URL: 'https://fitness-tracker-app-backend.vercel.app/api'
 
-  build:
-    docker:
-      - image: cimg/node:18.17
     steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          working-directory: ./fitness-tracker-app
-          command: |
-            npm install
-      - run:
-          name: Build application
-          working-directory: ./fitness-tracker-app
-          command: |
-            npm run build
+      # checkout the repository content to github runner
+      - name: Checkout
+        uses: actions/checkout@v2
 
-workflows:
-  version: 2
-  build-and-test:
-    jobs:
-      - test
-      - build:
-          requires:
-            - test
+      # setup nodejs environment
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: "20.12.2"
+
+      # cache the dependencies to speed up the build
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # install dependencies
+      - name: Install dependencies
+        working-directory: ./fitness-tracker-app
+        run: npm i
+
+      # build the react app
+      - name: Build
+        working-directory: ./fitness-tracker-app
+        run: npm run build
+
+      # test the react app
+      - name: Test
+        working-directory: ./fitness-tracker-app
+        run: npm test
