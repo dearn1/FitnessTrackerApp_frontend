@@ -5,3 +5,47 @@ on:
     branches: [ "*" ]
   pull_request:
     branches: [ "main" ]
+
+jobs:
+  test:
+    docker:
+      - image: cimg/node:18.17
+    steps:
+      - checkout  
+      - run:
+          name: Install dependencies
+          working-directory: ./fitness-tracker-app
+          command: |
+            npm install
+      - run:
+          name: Run tests
+          env:
+            REACT_APP_API_BASE_URL: 'https://fitness-tracker-app-backend.vercel.app/api'
+          working-directory: ./fitness-tracker-app
+          command: |
+            npm test -- --watchAll=false --coverage
+
+  build:
+    docker:
+      - image: cimg/node:18.17
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          working-directory: ./fitness-tracker-app
+          command: |
+            npm install
+      - run:
+          name: Build application
+          working-directory: ./fitness-tracker-app
+          command: |
+            npm run build
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
