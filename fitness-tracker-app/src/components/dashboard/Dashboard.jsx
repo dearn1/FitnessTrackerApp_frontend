@@ -54,8 +54,6 @@ const Dashboard = () => {
           <p>Ready to track your fitness journey today?</p>
         </div>
 
-        <ApiConnectionTest />
-
         <div className="quick-actions">
   <h3>Quick Actions</h3>
   <div className="actions-grid">
@@ -89,16 +87,6 @@ const Dashboard = () => {
       <h4>Log Steps</h4>
       <p>Add a new step entry</p>
     </Link>
-    <div className="action-card coming-soon-card">
-      <div className="action-icon">📊</div>
-      <h4>View Analytics</h4>
-      <p>Coming soon</p>
-    </div>
-    <div className="action-card coming-soon-card">
-      <div className="action-icon">🎯</div>
-      <h4>Set Goals</h4>
-      <p>Coming soon</p>
-    </div>
   </div>
 </div>
 
