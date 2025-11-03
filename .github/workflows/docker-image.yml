@@ -7,10 +7,10 @@ on:
     branches: [ "main" ]
 
 jobs:
-  deploy-react-to-gh-pages:
+  test:
     runs-on: ubuntu-latest
     env:
-      REACT_APP_API_BASE_URL: 'https://fitness-tracker-app-backend.vercel.app/api'
+      env_var: ${{ vars.REACT_APP_API_BASE_URL }}
 
     steps:
       # checkout the repository content to github runner
@@ -21,7 +21,42 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.5
         with:
-          node-version: "20.12.2"
+          node-version: "22.16.0"
+
+      # cache the dependencies to speed up the build
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # install dependencies
+      - name: Install dependencies
+        working-directory: ./fitness-tracker-app
+        run: npm i
+
+      # test the react app
+      - name: Test
+        working-directory: ./fitness-tracker-app
+        run: npm test
+
+  build:
+    runs-on: ubuntu-latest
+    env:
+      env_var: ${{ vars.REACT_APP_API_BASE_URL }}
+
+    steps:
+      # checkout the repository content to github runner
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # setup nodejs environment
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: "22.16.0"
 
       # cache the dependencies to speed up the build
       - name: Cache dependencies
@@ -41,8 +76,3 @@ jobs:
       - name: Build
         working-directory: ./fitness-tracker-app
         run: npm run build
-
-      # test the react app
-      - name: Test
-        working-directory: ./fitness-tracker-app
-        run: npm test
